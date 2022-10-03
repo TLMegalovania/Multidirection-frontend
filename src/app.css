@@ -13,21 +13,23 @@
   -webkit-text-size-adjust: 100%;
   background-color: var(--bg-color, hsl(0, 0%, 90%));
   color: var(--fg-color, hsl(0, 0%, 10%));
-  transition: all 5s;
 
   --shadow-offset: 0.2em;
   --shadow-offset-neg: -0.2em;
+  --mid-color: hsl(0, 0%, 50%);
+  --global-trans-time: 8s;
 }
 
 * {
   text-align: center;
+  transition: all var(--global-trans-time);
 }
 
-body {
+/* body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-}
+} */
 
 h1 {
   font-size: 3.2em;
@@ -51,14 +53,15 @@ button {
   background-color: var(--fg-color, hsl(0, 0%, 10%));
   color: var(--bg-color, hsl(0, 0%, 90%));
   cursor: pointer;
-  transition: box-shadow 0.25s ease, background-color 5s ease, color 5s ease;
+  transition: box-shadow 0.25s ease, background-color var(--global-trans-time) ease, color var(--global-trans-time) ease, transform 1.2s ease;
+  width: 16vw;
 }
 
 button:hover {
-  box-shadow: var(--shadow-offset) var(--shadow-offset) var(--shadow-offset) var(--mid-color, hsl(0, 0%, 50%)),
-    var(--shadow-offset-neg) var(--shadow-offset) var(--shadow-offset) var(--mid-color, hsl(0, 0%, 50%)),
-    var(--shadow-offset-neg) var(--shadow-offset-neg) var(--shadow-offset) var(--mid-color, hsl(0, 0%, 50%)),
-    var(--shadow-offset) var(--shadow-offset-neg) var(--shadow-offset) var(--mid-color, hsl(0, 0%, 50%));
+  box-shadow: var(--shadow-offset) var(--shadow-offset) var(--shadow-offset) var(--mid-color),
+    var(--shadow-offset-neg) var(--shadow-offset) var(--shadow-offset) var(--mid-color),
+    var(--shadow-offset-neg) var(--shadow-offset-neg) var(--shadow-offset) var(--mid-color),
+    var(--shadow-offset) var(--shadow-offset-neg) var(--shadow-offset) var(--mid-color);
 }
 
 /* @media (prefers-color-scheme: light) {
