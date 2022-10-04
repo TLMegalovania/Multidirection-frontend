@@ -3,56 +3,73 @@
   import { fade } from "svelte/transition";
   const dispatch = createEventDispatcher();
 
-  export let deg = 90;
+  export let bgColor: number;
   let shouldTrans = false;
   let trans: number;
   const transColor = () => {
     shouldTrans = true;
     const _change = () => {
-      if (deg == 90) deg = 10;
-      else deg = 90;
+      if (bgColor == 90) bgColor = 10;
+      else bgColor = 90;
     };
     _change();
     trans = setInterval(_change, 8000);
   };
   const stopTrans = () => {
-    shouldTrans = false;
+    //shouldTrans = false;
     clearInterval(trans);
+    dispatch("game");
   };
-  const rootStyle = document.documentElement.style;
 
-  $: rootStyle.setProperty("--bg-color", `hsl(0,0%,${deg}%)`);
-  $: rootStyle.setProperty("--fg-color", `hsl(0,0%,${100 - deg}%)`);
+  let outDone = false;
 </script>
 
-<h1 transition:fade>多向棋</h1>
+{#if !shouldTrans}
+  <h1 transition:fade on:outroend={() => (outDone = true)}>多向棋</h1>
+{:else if outDone}
+  <p transition:fade>由于无服务器，该游戏目前仅支持本地对战。</p>
+{/if}
 
 <button
   on:click={shouldTrans ? stopTrans : transColor}
   style={shouldTrans ? "transform: translateY(3em);" : ""}
   transition:fade
+  class="fir-but"
 >
   {#if shouldTrans}
-    取消
+    确定
   {:else}
-    匹配
+    开始
   {/if}
 </button>
 {#if !shouldTrans}
   <br />
-  <button on:click={() => dispatch("helper")} transition:fade>帮助</button>
+  <button on:click={() => dispatch("helper")} transition:fade class="sec-but"
+    >帮助</button
+  >
 {/if}
 
 <style>
-  h1 {
+  h1,
+  p {
     margin: 20vh auto 0;
     line-height: 1em;
-    color: var(--fg-color, hsl(0, 0%, 10%));
+    font-size: 3em;
+    color: var(--fg-color);
   }
-  h1 + button {
-    margin-top: 30vh;
+  p {
+    font-size: 2em;
+  }
+  .fir-but {
+    top: 50vh;
+  }
+  .sec-but {
+    top: 65vh;
   }
   button {
-    margin-top: 8vh;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
   }
 </style>

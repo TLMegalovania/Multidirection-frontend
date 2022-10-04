@@ -17,6 +17,6 @@
     margin-top: 30vh;
     margin-bottom: 30vh;
     font-size: large;
-    color: var(--fg-color, hsl(0, 0%, 10%));
+    color: var(--fg-color);
   }
 </style>
