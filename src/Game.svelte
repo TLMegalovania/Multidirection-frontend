@@ -64,7 +64,7 @@
 </div>
 
 <button
-  style={gameResult != Side.Null ? "" : "transform: translateY(-15vmin);"}
+  style={gameResult != Side.Null ? "" : "transform: translateY(-15vh);"}
   id="back"
   on:click={() => dispatch("back")}
   transition:fade
@@ -87,7 +87,7 @@
 
 <style>
   #back {
-    margin-top: 23vmin;
+    margin-top: 23vh;
   }
   :root {
     --border-width: 0.5vmin;
@@ -97,11 +97,11 @@
     transition: all 0.5s;
   }
   p {
-    margin: -23vmin auto -1vmin;
+    margin: -24vh auto -1vh;
     color: var(--fg-color);
   }
   button {
-    margin-top: 4vmin;
+    margin-top: 2vh;
   }
   .board {
     height: 52vmin;

@@ -57,6 +57,7 @@ button {
   cursor: pointer;
   transition: box-shadow 0.25s ease, background-color var(--global-trans-time) ease, color var(--global-trans-time) ease, transform 1.2s ease;
   width: 16vw;
+  min-width: 10em;
 }
 
 button:hover {
