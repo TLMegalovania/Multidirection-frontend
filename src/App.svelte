@@ -1,5 +1,7 @@
 <script lang="ts">
+  import Ai from "./AI.svelte";
   import Game from "./Game.svelte";
+  import { Side } from "./global.js";
   import Help from "./Help.svelte";
   import Menu from "./Menu.svelte";
 
@@ -7,6 +9,7 @@
     Menu,
     Help,
     Game,
+    AI,
   }
   let mode = Mode.Menu;
   let outDone = true;
@@ -20,6 +23,9 @@
 
   $: rootStyle.setProperty("--bg-color", `hsl(0,0%,${bgColor}%)`);
   $: rootStyle.setProperty("--fg-color", `hsl(0,0%,${100 - bgColor}%)`);
+
+  let aiSide = Side.Null;
+  let aiDepth = 0;
 </script>
 
 {#if mode == Mode.Menu && outDone}
@@ -32,7 +38,20 @@
       switchout();
       mode = Mode.Game;
     }}
+    on:ai={() => {
+      switchout();
+      mode = Mode.AI;
+    }}
     bind:bgColor
+  />
+{:else if mode == Mode.AI && outDone}
+  <Ai
+    bind:aiDepth
+    bind:aiSide
+    on:game={() => {
+      switchout();
+      mode = Mode.Game;
+    }}
   />
 {:else if mode == Mode.Help && outDone}
   <Help
@@ -47,7 +66,11 @@
     on:back={() => {
       switchout();
       mode = Mode.Menu;
+      aiSide = Side.Null;
+      aiDepth = 0;
     }}
+    {aiDepth}
+    {aiSide}
   />
 {:else if outDone}
   <h1>Error Page</h1>

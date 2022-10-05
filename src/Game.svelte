@@ -1,7 +1,8 @@
 <script lang="ts">
   import { createEventDispatcher, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
-  import { newBoard, Side } from "./global.js";
+  import { BOARD_X, BOARD_Y, newBoard, Side } from "./global.js";
+  import { ai } from "./lib/ai.js";
   import { judge } from "./lib/logic.js";
 
   const dispatch = createEventDispatcher();
@@ -19,20 +20,29 @@
   let lastTarget: HTMLElement;
   let gameResult = Side.Null;
 
+  const areaElements = Array<HTMLElement[]>(BOARD_X);
+  for (let i = 0; i < BOARD_X; i++) {
+    areaElements[i] = Array(BOARD_Y);
+  }
+
   function clearState() {
     bgColor = 10;
     board = newBoard();
     lastTarget?.classList.remove("emit");
     lastTarget = undefined;
     gameResult = Side.Null;
+    if (aiSide == Side.Black) {
+      setTimeout(() => {
+        go(...ai(board, aiDepth));
+      });
+    }
   }
 
-  function go(x: number, y: number, event: MouseEvent) {
+  function go(x: number, y: number) {
     if (board.board[x][y] != Side.Null || gameResult != Side.Null) return;
     lastTarget?.classList.remove("emit");
     board.board[x][y] = board.side;
-    const result = judge(board, x, y);
-    console.log(Side[result]);
+    const result = judge(board.board, x, y);
     if (result == Side.Null) {
       if (board.side == Side.Black) {
         board.side = Side.White;
@@ -44,8 +54,30 @@
     } else {
       gameResult = result;
     }
-    lastTarget = event.target as HTMLElement;
+    lastTarget = areaElements[x][y];
     lastTarget.classList.add("emit");
+  }
+
+  export let aiSide: Side;
+  export let aiDepth: number;
+
+  function alphago(x: number, y: number) {
+    if (
+      board.board[x][y] != Side.Null ||
+      gameResult != Side.Null ||
+      board.side == aiSide
+    )
+      return;
+    go(x, y);
+    if (gameResult == Side.Null)
+      setTimeout(() => {
+        go(...ai(board, aiDepth));
+      }, 1000);
+  }
+  if (aiSide == Side.Black) {
+    setTimeout(() => {
+      go(...ai(board, aiDepth));
+    }, 1000);
   }
 </script>
 
@@ -53,9 +85,12 @@
   {#each board.board as row, x}
     {#each row as area, y}
       <div
-        class:disabled={area != Side.Null || gameResult != Side.Null}
+        class:disabled={area != Side.Null ||
+          gameResult != Side.Null ||
+          board.side == aiSide}
         class="area"
-        on:click={(event) => go(x, y, event)}
+        bind:this={areaElements[x][y]}
+        on:click={() => (aiSide == Side.Null ? go(x, y) : alphago(x, y))}
       >
         {area == Side.Black ? "⚫" : area == Side.White ? "⚪" : ""}
       </div>

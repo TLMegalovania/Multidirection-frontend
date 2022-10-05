@@ -42,9 +42,15 @@
     开始
   {/if}
 </button>
+
 {#if !shouldTrans}
   <br />
-  <button on:click={() => dispatch("helper")} transition:fade class="sec-but"
+
+  <button on:click={() => dispatch("ai")} class="sec-but" transition:fade
+    >电脑对战</button
+  >
+  <br />
+  <button on:click={() => dispatch("helper")} transition:fade class="third-but"
     >帮助</button
   >
 {/if}
@@ -65,6 +71,9 @@
   }
   .sec-but {
     top: 65vh;
+  }
+  .third-but {
+    top: 80vh;
   }
   button {
     position: absolute;
