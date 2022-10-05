@@ -83,7 +83,8 @@ export function ai(_board: Board, depth: number): [number, number] {
 
   let max = -1,
     resx = 0,
-    resy = 0;
+    resy = 0,
+    maxrand = 0;
 
   for (let x = 0; x < BOARD_X; x++) {
     for (let y = 0; y < BOARD_Y; y++) {
@@ -96,7 +97,15 @@ export function ai(_board: Board, depth: number): [number, number] {
       } else if (result == Side.Null) {
         if (depth <= 1) {
           board[x][y] = Side.Null;
-          if (max < 3 || (max == 3 && Math.random() > 0.5)) {
+          let eq3 = false;
+          if (max == 3) {
+            const ra = Math.random();
+            if (ra > maxrand) {
+              maxrand = ra;
+              eq3 = true;
+            }
+          }
+          if (max < 3 || eq3) {
             max = 3;
             resx = x;
             resy = y;
@@ -106,7 +115,15 @@ export function ai(_board: Board, depth: number): [number, number] {
 
           board[x][y] = Side.Null;
           if (next == 4) return [x, y];
-          if (max < next || (max == next && Math.random() > 0.5)) {
+          let eq3 = false;
+          if (max == next) {
+            const ra = Math.random();
+            if (ra > maxrand) {
+              maxrand = ra;
+              eq3 = true;
+            }
+          }
+          if (max < next || eq3) {
             max = next;
             resx = x;
             resy = y;
