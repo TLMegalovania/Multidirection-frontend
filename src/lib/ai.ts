@@ -73,6 +73,18 @@ function whenOppo(
   return min;
 }
 
+function rand(board: Side[][]): [number, number] {
+  const size = BOARD_X * BOARD_Y;
+  while (true) {
+    const next = Math.floor(Math.random() * size);
+    const row = Math.floor(next / BOARD_X);
+    const col = next % BOARD_X;
+    if (board[row][col] == Side.Null) {
+      return [row, col];
+    }
+  }
+}
+
 export function ai(_board: Board, depth: number): [number, number] {
   const thisSide = _board.side;
   if (thisSide != Side.Black && thisSide != Side.White)
@@ -80,6 +92,13 @@ export function ai(_board: Board, depth: number): [number, number] {
   const oppoSide = thisSide == Side.Black ? Side.White : Side.Black;
 
   const board = _board.board;
+
+  const _gone = board.reduce(
+    (sum, arr) =>
+      sum + arr.reduce((asum, s) => asum + (s == Side.Null ? 0 : 1), 0),
+    0
+  );
+  if (_gone < 4) return rand(board);
 
   let max = -1,
     resx = 0,

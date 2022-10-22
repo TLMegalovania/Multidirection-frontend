@@ -99,7 +99,7 @@
 </div>
 
 <button
-  style={gameResult != Side.Null ? "" : "transform: translateY(-15vh);"}
+  class={gameResult != Side.Null ? "" : "trany"}
   id="back"
   on:click={() => dispatch("back")}
   transition:fade
@@ -123,6 +123,9 @@
 <style>
   #back {
     margin-top: 23vh;
+  }
+  .trany {
+    transform: translateY(-15vh);
   }
   :root {
     --border-width: 0.5vmin;
@@ -158,6 +161,37 @@
     text-align: center;
     line-height: 10vmin;
     font-size: 5vmin;
+  }
+  @media screen and (max-width: 1000px) {
+    #back {
+      margin-top: 35vw;
+    }
+    :root {
+      --border-width: 0.5vw;
+      --border-width-neg: -0.5vw;
+      font-size: 1.5em;
+    }
+    p {
+      margin: -38vw auto -1vw;
+    }
+    button {
+      margin-top: 2vw;
+    }
+    .trany {
+      transform: translateY(-25vw);
+    }
+    .board {
+      height: 96vw;
+      width: 96vw;
+      margin-top: 3vw;
+      grid-template-rows: repeat(5, 18.8vw);
+    }
+    .area {
+      height: 18.8vw;
+      width: 18.8vw;
+      line-height: 18.8vw;
+      font-size: 10vw;
+    }
   }
   .area.disabled {
     cursor: not-allowed;

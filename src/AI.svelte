@@ -35,8 +35,8 @@
     <button on:click={() => chooseDepth(2)}>简单</button>
     <br />
     <button on:click={() => chooseDepth(4)}>普通</button>
-    <!-- <br />
-    <button on:click={() => chooseDepth(5)}>困难</button> -->
+    <br />
+    <button on:click={() => chooseDepth(6)}>困难</button>
   </div>
 {/if}
 
