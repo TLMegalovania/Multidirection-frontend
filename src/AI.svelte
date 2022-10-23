@@ -1,9 +1,10 @@
 <script lang="ts">
   import { Side } from "./global.js";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
 
   const dispatch = createEventDispatcher();
+  onDestroy(() => dispatch("onDestroy"));
 
   let panel = 0;
   export let aiSide: Side;

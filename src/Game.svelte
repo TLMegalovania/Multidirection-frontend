@@ -10,6 +10,7 @@
   const rootStyle = document.documentElement.style;
   rootStyle.setProperty("transition", "all 0.5s");
   onDestroy(() => {
+    dispatch("onDestroy");
     rootStyle.removeProperty("transition");
   });
 
@@ -172,10 +173,10 @@
       font-size: 1.5em;
     }
     p {
-      margin: -38vw auto -1vw;
+      margin: -38vw auto -5vw;
     }
     button {
-      margin-top: 2vw;
+      margin-top: -10vw;
     }
     .trany {
       transform: translateY(-25vw);

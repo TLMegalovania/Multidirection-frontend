@@ -13,9 +13,11 @@
   }
   let mode = Mode.Menu;
   let outDone = true;
-  function switchout() {
+  function setOutToDo() {
     outDone = false;
-    setTimeout(() => (outDone = true), 500);
+  }
+  function setOutDone() {
+    outDone = true;
   }
   let bgColor = 90;
 
@@ -31,17 +33,18 @@
 {#if mode == Mode.Menu && outDone}
   <Menu
     on:helper={() => {
-      switchout();
+      setOutToDo();
       mode = Mode.Help;
     }}
     on:game={() => {
-      switchout();
+      setOutToDo();
       mode = Mode.Game;
     }}
     on:ai={() => {
-      switchout();
+      setOutToDo();
       mode = Mode.AI;
     }}
+    on:onDestroy={setOutDone}
     bind:bgColor
   />
 {:else if mode == Mode.AI && outDone}
@@ -49,26 +52,29 @@
     bind:aiDepth
     bind:aiSide
     on:game={() => {
-      switchout();
+      setOutToDo();
       mode = Mode.Game;
     }}
+    on:onDestroy={setOutDone}
   />
 {:else if mode == Mode.Help && outDone}
   <Help
     on:back={() => {
-      switchout();
+      setOutToDo();
       mode = Mode.Menu;
     }}
+    on:onDestroy={setOutDone}
   />
 {:else if mode == Mode.Game && outDone}
   <Game
     bind:bgColor
     on:back={() => {
-      switchout();
+      setOutToDo();
       mode = Mode.Menu;
       aiSide = Side.Null;
       aiDepth = 0;
     }}
+    on:onDestroy={setOutDone}
     {aiDepth}
     {aiSide}
   />

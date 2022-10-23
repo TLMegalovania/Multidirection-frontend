@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
 
   const dispatch = createEventDispatcher();
+  onDestroy(() => dispatch("onDestroy"));
 </script>
 
 <p transition:fade>
@@ -15,8 +16,9 @@
 <style>
   p {
     margin-top: 30vh;
-    margin-bottom: 30vh;
-    font-size: large;
+    margin-bottom: 15vh;
+    font-size: 1.5em;
+    line-height: 1.8em;
     color: var(--fg-color);
   }
 </style>
