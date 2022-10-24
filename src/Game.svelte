@@ -100,7 +100,7 @@
 </div>
 
 <button
-  class={gameResult != Side.Null ? "" : "trany"}
+  class={gameResult == Side.Null ? "" : "trany"}
   id="back"
   on:click={() => dispatch("back")}
   transition:fade
@@ -123,10 +123,10 @@
 
 <style>
   #back {
-    margin-top: 23vh;
+    margin-top: 10vh;
   }
   .trany {
-    transform: translateY(-15vh);
+    transform: translateY(15vh);
   }
   :root {
     --border-width: 0.5vmin;
@@ -136,11 +136,11 @@
     transition-duration: 0.5s;
   }
   p {
-    margin: -24vh auto -1vh;
+    margin: -10vh auto 0;
     color: var(--fg-color);
   }
   button {
-    margin-top: 2vh;
+    margin-top: 3vh;
   }
   .board {
     height: 52vmin;
@@ -165,21 +165,22 @@
   }
   @media screen and (max-width: 1000px) {
     #back {
-      margin-top: 35vw;
+      margin-top: 10vw;
     }
     :root {
       --border-width: 0.5vw;
       --border-width-neg: -0.5vw;
-      font-size: 1.5em;
+      font-size: 1.7em;
+      line-height: 2vw;
     }
     p {
-      margin: -38vw auto -5vw;
+      margin-top: -12vw;
     }
     button {
-      margin-top: -10vw;
+      margin-top: 8vw;
     }
     .trany {
-      transform: translateY(-25vw);
+      transform: translateY(30vw);
     }
     .board {
       height: 96vw;

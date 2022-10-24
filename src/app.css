@@ -80,4 +80,5 @@ button:hover {
     inset var(--shadow-offset-neg) var(--shadow-offset) var(--shadow-offset) var(--fg-color),
     inset var(--shadow-offset-neg) var(--shadow-offset-neg) var(--shadow-offset) var(--fg-color),
     inset var(--shadow-offset) var(--shadow-offset-neg) var(--shadow-offset) var(--fg-color);
+  transition-property: box-shadow;
 }
