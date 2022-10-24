@@ -133,7 +133,7 @@
     --border-width-neg: -0.5vmin;
   }
   * {
-    transition: all 0.5s;
+    transition-duration: 0.5s;
   }
   p {
     margin: -24vh auto -1vh;

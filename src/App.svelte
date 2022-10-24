@@ -3,6 +3,7 @@
   import Game from "./Game.svelte";
   import { Side } from "./global.js";
   import Help from "./Help.svelte";
+  import Match from "./Match.svelte";
   import Menu from "./Menu.svelte";
 
   enum Mode {
@@ -10,6 +11,7 @@
     Help,
     Game,
     AI,
+    Match,
   }
   let mode = Mode.Menu;
   let outDone = true;
@@ -28,6 +30,12 @@
 
   let aiSide = Side.Null;
   let aiDepth = 0;
+
+  const _location = window.location;
+  const websockUrl = `${_location.protocol == "https:" ? "wss:" : "ws:"}//${
+    _location.host
+  }/websocket`;
+  let websock: WebSocket | undefined;
 </script>
 
 {#if mode == Mode.Menu && outDone}
@@ -44,8 +52,22 @@
       setOutToDo();
       mode = Mode.AI;
     }}
+    on:match={() => {
+      setOutToDo();
+      mode = Mode.Match;
+    }}
     on:onDestroy={setOutDone}
+  />
+{:else if mode == Mode.Match && outDone}
+  <Match
     bind:bgColor
+    bind:websock
+    {websockUrl}
+    on:cancel={() => {
+      setOutToDo();
+      mode = Mode.Menu;
+    }}
+    on:onDestroy={setOutDone}
   />
 {:else if mode == Mode.AI && outDone}
   <Ai

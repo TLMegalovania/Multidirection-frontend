@@ -3,83 +3,29 @@
   import { fade } from "svelte/transition";
   const dispatch = createEventDispatcher();
   onDestroy(() => dispatch("onDestroy"));
-
-  export let bgColor: number;
-  let shouldTrans = false;
-  let trans: number;
-  const transColor = () => {
-    shouldTrans = true;
-    const _change = () => {
-      if (bgColor == 90) bgColor = 10;
-      else bgColor = 90;
-    };
-    _change();
-    trans = setInterval(_change, 8000);
-  };
-  const stopTrans = () => {
-    //shouldTrans = false;
-    clearInterval(trans);
-    dispatch("game");
-  };
-
-  let outDone = false;
 </script>
 
-{#if !shouldTrans}
-  <h1 transition:fade on:outroend={() => (outDone = true)}>多向棋</h1>
-{:else if outDone}
-  <p transition:fade>由于无服务器，该游戏目前仅支持本地对战。</p>
-{/if}
+<h1 transition:fade>多向棋</h1>
 
-<button
-  on:click={shouldTrans ? stopTrans : transColor}
-  style={shouldTrans ? "transform: translateY(3em);" : ""}
-  transition:fade
-  class="fir-but"
->
-  {#if shouldTrans}
-    确定
-  {:else}
-    开始
-  {/if}
-</button>
-
-{#if !shouldTrans}
-  <br />
-
-  <button on:click={() => dispatch("ai")} class="sec-but" transition:fade
-    >电脑对战</button
-  >
-  <br />
-  <button on:click={() => dispatch("helper")} transition:fade class="third-but"
-    >帮助</button
-  >
-{/if}
+<button on:click={() => dispatch("game")} transition:fade>本地对战</button>
+<br />
+<button on:click={() => dispatch("match")} transition:fade>在线匹配</button>
+<br />
+<button on:click={() => dispatch("ai")} transition:fade>电脑对战</button>
+<br />
+<button on:click={() => dispatch("helper")} transition:fade>帮助</button>
 
 <style>
-  h1,
-  p {
+  h1 {
     margin: 20vh auto 0;
     line-height: 1em;
     font-size: 3em;
     color: var(--fg-color);
   }
-  p {
-    font-size: 2em;
-  }
-  .fir-but {
-    top: 50vh;
-  }
-  .sec-but {
-    top: 65vh;
-  }
-  .third-but {
-    top: 80vh;
+  h1 + button {
+    margin-top: 20vh;
   }
   button {
-    position: absolute;
-    margin: auto;
-    left: 0;
-    right: 0;
+    margin-top: 7vh;
   }
 </style>
