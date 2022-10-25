@@ -11,9 +11,10 @@
 
   startTrans();
   websock = new WebSocket(websockUrl);
-  websock.onclose = (event) => {
-    if (event.code != 1000) alert("连接由于意外被关闭。");
-    cancel();
+  websock.onclose = () => {
+    failed = true;
+    outdone = false;
+    stopTrans();
   };
 
   const dispatch = createEventDispatcher();
@@ -37,10 +38,26 @@
     websock.close();
     dispatch("cancel");
   }
+
+  let failed = false;
+  let outdone = true;
 </script>
 
-<h2 transition:fade>匹配中...</h2>
-<button on:click={cancel} transition:fade>取消</button>
+{#if outdone}
+  {#if failed}
+    <h2 transition:fade>连接由于意外被关闭。</h2>
+  {:else}
+    <h2 transition:fade on:outroend={() => (outdone = true)}>匹配中...</h2>
+  {/if}
+{/if}
+
+<button on:click={cancel} transition:fade>
+  {#if failed}
+    确定
+  {:else}
+    取消
+  {/if}
+</button>
 
 <style>
   h2 {
@@ -49,6 +66,11 @@
     font-size: 2.2em;
   }
   button {
-    margin-top: 30vh;
+    position: fixed;
+    bottom: 20vh;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
   }
 </style>

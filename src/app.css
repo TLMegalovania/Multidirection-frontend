@@ -31,7 +31,7 @@
 
 * {
   text-align: center;
-  transition-property: background-color, color, transform;
+  transition-property: background-color, color, transform, box-shadow;
   transition-duration: var(--global-trans-time);
 }
 
@@ -80,5 +80,4 @@ button:hover {
     inset var(--shadow-offset-neg) var(--shadow-offset) var(--shadow-offset) var(--fg-color),
     inset var(--shadow-offset-neg) var(--shadow-offset-neg) var(--shadow-offset) var(--fg-color),
     inset var(--shadow-offset) var(--shadow-offset-neg) var(--shadow-offset) var(--fg-color);
-  transition-property: box-shadow;
 }
