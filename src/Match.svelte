@@ -16,6 +16,11 @@
     outdone = false;
     stopTrans();
   };
+  websock.onmessage = (ev: MessageEvent<string>) => {
+    stopTrans();
+    websock.onclose = null;
+    dispatch("open", ev.data);
+  };
 
   const dispatch = createEventDispatcher();
   onDestroy(() => dispatch("onDestroy"));

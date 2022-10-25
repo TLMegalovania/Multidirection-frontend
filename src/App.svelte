@@ -36,6 +36,7 @@
     _location.host
   }/websocket`;
   let websock: WebSocket | undefined;
+  let enemySide = Side.Null;
 </script>
 
 {#if mode == Mode.Menu && outDone}
@@ -68,6 +69,11 @@
       mode = Mode.Menu;
     }}
     on:onDestroy={setOutDone}
+    on:open={(sside) => {
+      enemySide = sside.detail == "black" ? Side.White : Side.Black;
+      setOutToDo();
+      mode = Mode.Game;
+    }}
   />
 {:else if mode == Mode.AI && outDone}
   <Ai
@@ -95,10 +101,21 @@
       mode = Mode.Menu;
       aiSide = Side.Null;
       aiDepth = 0;
+      websock?.close();
+      websock = null;
+    }}
+    on:rematch={() => {
+      setOutToDo();
+      mode = Mode.Match;
+      enemySide = Side.Null;
+      websock?.close();
+      websock = null;
     }}
     on:onDestroy={setOutDone}
     {aiDepth}
     {aiSide}
+    {enemySide}
+    {websock}
   />
 {:else if outDone}
   <h1>Error Page</h1>

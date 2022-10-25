@@ -40,7 +40,13 @@
   }
 
   function go(x: number, y: number) {
-    if (board.board[x][y] != Side.Null || gameResult != Side.Null) return;
+    if (
+      board.board[x][y] != Side.Null ||
+      gameResult != Side.Null ||
+      flee ||
+      connectionLost
+    )
+      return;
     lastTarget?.classList.remove("emit");
     board.board[x][y] = board.side;
     const result = judge(board.board, x, y);
@@ -80,6 +86,33 @@
       go(...ai(board, aiDepth));
     }, 1000);
   }
+
+  export let enemySide: Side;
+  export let websock: WebSocket;
+
+  let connectionLost = false;
+  let flee = false;
+
+  if (enemySide != Side.Null && websock) {
+    websock.onmessage = (ev: MessageEvent<string>) => {
+      if (board.side != enemySide) return;
+      const [x, y] = ev.data.split(" ").map(Number);
+      if (x >= 0 && x < BOARD_X && y >= 0 && y < BOARD_Y) go(x, y);
+    };
+    websock.onclose = (ev) => {
+      setTimeout(() => {
+        if (gameResult == Side.Null) {
+          if (ev.code == 1000) {
+            flee = true;
+          } else connectionLost = true;
+        }
+      }, 500);
+    };
+  }
+
+  function rematch() {
+    dispatch("rematch");
+  }
 </script>
 
 <div transition:fade class="board">
@@ -88,10 +121,16 @@
       <div
         class:disabled={area != Side.Null ||
           gameResult != Side.Null ||
-          board.side == aiSide}
+          board.side == aiSide ||
+          board.side == enemySide ||
+          flee ||
+          connectionLost}
         class="area"
         bind:this={areaElements[x][y]}
-        on:click={() => (aiSide == Side.Null ? go(x, y) : alphago(x, y))}
+        on:click={() => {
+          if (board.side != enemySide)
+            aiSide == Side.Null ? go(x, y) : alphago(x, y);
+        }}
       >
         {area == Side.Black ? "⚫" : area == Side.White ? "⚪" : ""}
       </div>
@@ -100,7 +139,7 @@
 </div>
 
 <button
-  class={gameResult == Side.Null ? "" : "trany"}
+  class={gameResult == Side.Null && !flee && !connectionLost ? "" : "trany"}
   id="back"
   on:click={() => dispatch("back")}
   transition:fade
@@ -108,16 +147,23 @@
   返回
 </button>
 
-{#if gameResult != Side.Null}
+{#if gameResult != Side.Null || flee || connectionLost}
   <p transition:fade>
     {gameResult == Side.Black
       ? "黑方获胜"
       : gameResult == Side.White
       ? "白方获胜"
+      : flee
+      ? "对手逃跑"
+      : connectionLost
+      ? "与服务器失去连接"
       : "平局"}
   </p>
   <br />
-  <button on:click={clearState} transition:fade>重新开始</button>
+  <button
+    on:click={enemySide == Side.Null ? clearState : rematch}
+    transition:fade>重新开始</button
+  >
   <br />
 {/if}
 
