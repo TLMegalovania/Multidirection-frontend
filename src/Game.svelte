@@ -118,6 +118,7 @@
 <div transition:fade class="board">
   {#each board.board as row, x}
     {#each row as area, y}
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
       <div
         class:disabled={area != Side.Null ||
           gameResult != Side.Null ||
@@ -128,8 +129,12 @@
         class="area"
         bind:this={areaElements[x][y]}
         on:click={() => {
-          if (board.side != enemySide)
+          if (board.side != enemySide) {
             aiSide == Side.Null ? go(x, y) : alphago(x, y);
+            if (enemySide != Side.Null && websock) {
+              websock.send(`${x} ${y}`);
+            }
+          }
         }}
       >
         {area == Side.Black ? "⚫" : area == Side.White ? "⚪" : ""}
