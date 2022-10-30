@@ -174,10 +174,10 @@
 
 <style>
   #back {
-    margin-top: 10vh;
+    margin-top: 3em;
   }
   .trany {
-    transform: translateY(15vh);
+    transform: translateY(8em);
   }
   :root {
     --border-width: 0.5vmin;
@@ -187,11 +187,11 @@
     transition-duration: 0.5s;
   }
   p {
-    margin: -10vh auto 0;
+    margin: -3em auto 0;
     color: var(--fg-color);
   }
   button {
-    margin-top: 3vh;
+    margin-top: 1em;
   }
   .board {
     height: 52vmin;
@@ -216,22 +216,20 @@
   }
   @media screen and (max-width: 1000px) {
     #back {
-      margin-top: 10vw;
+      margin-top: 4em;
     }
     :root {
       --border-width: 0.5vw;
       --border-width-neg: -0.5vw;
-      font-size: 1.7em;
-      line-height: 2vw;
     }
     p {
-      margin-top: -12vw;
+      margin-top: -4em;
     }
     button {
-      margin-top: 8vw;
+      margin-top: 2em;
     }
     .trany {
-      transform: translateY(30vw);
+      transform: translateY(7em);
     }
     .board {
       height: 96vw;

@@ -28,4 +28,13 @@
   button {
     margin-top: 7vh;
   }
+
+  @media screen and (max-width: 1000px) {
+    h1 {
+      margin-top: 2em;
+    }
+    h1 + button {
+      margin-top: 6em;
+    }
+  }
 </style>
