@@ -39,6 +39,8 @@
     }
   }
 
+  export let websock: WebSocket;
+
   function go(x: number, y: number) {
     if (
       board.board[x][y] != Side.Null ||
@@ -60,6 +62,7 @@
       }
     } else {
       gameResult = result;
+      websock?.close();
     }
     lastTarget = areaElements[x][y];
     lastTarget.classList.add("emit");
@@ -88,7 +91,6 @@
   }
 
   export let enemySide: Side;
-  export let websock: WebSocket;
 
   let connectionLost = false;
   let flee = false;
