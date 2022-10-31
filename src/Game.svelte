@@ -215,6 +215,7 @@
     text-align: center;
     line-height: 10vmin;
     font-size: 5vmin;
+    color: black;
   }
   @media screen and (max-width: 1000px) {
     #back {
