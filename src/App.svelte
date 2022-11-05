@@ -103,6 +103,7 @@
       aiDepth = 0;
       websock?.close();
       websock = null;
+      enemySide = Side.Null;
     }}
     on:rematch={() => {
       setOutToDo();
